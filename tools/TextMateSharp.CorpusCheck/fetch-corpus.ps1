@@ -26,6 +26,10 @@ $corpora | ForEach-Object -ThrottleLimit $Parallel -Parallel {
         & $git @('remote', 'add', 'origin', $c.repo)
     }
     & $git @('config', 'core.longpaths', 'true')
+    # Only text is tokenized: never run Git LFS, which may not be installed.
+    & $git @('config', 'filter.lfs.process', '')
+    & $git @('config', 'filter.lfs.smudge', '')
+    & $git @('config', 'filter.lfs.required', 'false')
     & $git (@('sparse-checkout', 'set', '--no-cone') + @($c.sparse))
     & $git @('fetch', '-q', '--depth', '1', '--filter=blob:none', 'origin', $c.commit)
     & $git @('checkout', '-q', '--force', $c.commit)

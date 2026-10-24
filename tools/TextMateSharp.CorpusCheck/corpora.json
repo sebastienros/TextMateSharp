@@ -401,7 +401,7 @@
       "repo": "https://github.com/microsoft/vscode-docs",
       "commit": "a03090533810eb02e5b9a2a650e2a3df32192b42",
       "sparse": [
-        "/docs/"
+        "/docs/**/*.md"
       ],
       "files": [
         "*.md"
@@ -589,7 +589,7 @@
       "repo": "https://github.com/asciidoctor/asciidoctor",
       "commit": "3fbf3dee5f7fe6e222ba003d1c77bc3afb4b1ff9",
       "sparse": [
-        "/docs/"
+        "/docs/**/*.adoc"
       ],
       "files": [
         "*.adoc"
