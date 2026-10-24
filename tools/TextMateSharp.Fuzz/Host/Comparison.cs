@@ -31,7 +31,9 @@ public static class Comparison
     public static Difference? Compare(string scope, string[] lines, string branch, string official)
     {
         Difference? difference = Compare(scope, branch, official);
-        if (difference != null && !IsCrash(difference.Kind) && !IsTiming(difference.Kind) && lines.Any(HasLoneSurrogate))
+        // Exceptions included: a back-reference can paste a captured lone surrogate into a regex, which both engines
+        // reject, at points that depend on which rules earlier inputs compiled.
+        if (difference != null && !IsTiming(difference.Kind) && !difference.Branch.Contains(" EXC runner ") && lines.Any(HasLoneSurrogate))
         {
             return difference with { Kind = "invalid-utf16", Signature = "invalid-utf16|" + scope };
         }
