@@ -448,6 +448,12 @@ public sealed class Campaign
                     {
                         Crash("hang", inflight);
                     }
+                    // Halt the other workers first: one that starts its next input after its inflight file is
+                    // deleted would leave a file the next run takes for a process crash.
+                    foreach (Worker w in _workers)
+                    {
+                        w.Halt();
+                    }
                     foreach (Worker w in _workers)
                     {
                         w.Clear();
@@ -618,6 +624,7 @@ public sealed class Inflight
 public sealed class Worker(int id, Func<string, string[], int, string> branch, Func<string, string[], int, string> official, string inflightPath, int lineTimeLimitMs)
 {
     private long _started;
+    private volatile bool _halted;
 
     public int Id => id;
 
@@ -625,10 +632,24 @@ public sealed class Worker(int id, Func<string, string[], int, string> branch, F
 
     public TimeSpan Elapsed => Volatile.Read(ref _started) is long started && started != 0 ? Stopwatch.GetElapsedTime(started) : TimeSpan.Zero;
 
+    // Stops the worker before its next run, for the process to exit.
+    public void Halt() => _halted = true;
+
     public (string Branch, string Official) Exec(string scope, long iteration, string[] lines)
     {
+        while (_halted)
+        {
+            Thread.Sleep(Timeout.Infinite);
+        }
+
         var inflight = new Inflight { Scope = scope, Iteration = iteration, Input = Lines.From(lines) };
         Store.Write(inflightPath, inflight);
+        if (_halted)
+        {
+            // Halted while writing: the file must not outlive the process.
+            Clear();
+            Thread.Sleep(Timeout.Infinite);
+        }
         Current = inflight;
         Volatile.Write(ref _started, Stopwatch.GetTimestamp());
         string b = Guard(branch, scope, lines);
