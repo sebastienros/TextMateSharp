@@ -43,7 +43,7 @@ Options: `--only csharp,go`, `--max-files N` (first N files per corpus, by path)
 
 Output: `out/report.json` (everything, including every recorded discrepancy) and `out/report.md` (the summary table
 and the first discrepancies per corpus). [`sample-report/`](sample-report) is a local run with `--max-files 30`
-(macOS arm64, 14 threads): 1,466 files, 606,013 lines, no mismatch, no error. [`devbox1-report/`](devbox1-report) is the full run on devbox1 (16 cores, 4 min 44 s): 21,364 files, 7,352,306 lines, 3 mismatched lines (Unicode superscript digits in Python and Julia), and 1 error from a symbolic link in the asciidoc corpus, which is now skipped.
+(macOS arm64, 14 threads): 1,466 files, 606,013 lines, no mismatch, no error. [`devbox1-report/`](devbox1-report) is the full run on devbox1 (16 cores, 4 min 43 s) with GregsEx 0.4.1: 21,364 files, 7,352,306 lines, no mismatch, no error. The first run, with GregsEx 0.4.0, found 3 mismatched lines (Unicode superscript digits in Python and Julia), fixed in GregsEx 0.4.1 (sebastienros/gregsex#13, #14).
 
 ## On devbox1
 
