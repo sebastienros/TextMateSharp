@@ -80,7 +80,7 @@ public sealed class Lines
         {
             return Text;
         }
-        return Text.Select((t, i) => Utf16[i] is string hex ? Encoding.Unicode.GetString(Convert.FromHexString(hex)) : t).ToArray();
+        return Text.Select((t, i) => Utf16[i] is string hex ? FromUtf16Bytes(Convert.FromHexString(hex)) : t).ToArray();
     }
 
     // The line with each lone surrogate replaced by U+FFFD, so it can be written as UTF-8.
@@ -100,6 +100,17 @@ public sealed class Lines
             }
         }
         return text.ToString();
+    }
+
+    // Encoding.Unicode would replace the lone surrogates this exists to keep.
+    private static string FromUtf16Bytes(byte[] bytes)
+    {
+        var chars = new char[bytes.Length / 2];
+        for (int i = 0; i < chars.Length; i++)
+        {
+            chars[i] = (char)(bytes[2 * i] | (bytes[2 * i + 1] << 8));
+        }
+        return new string(chars);
     }
 
     private static byte[] Utf16Bytes(string line)
