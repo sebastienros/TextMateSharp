@@ -42,7 +42,7 @@ public sealed class Checker(Options options, List<CorpusDefinition> corpora, Fun
                 continue;
             }
 
-            var files = Directory.EnumerateFiles(root, "*", new EnumerationOptions { RecurseSubdirectories = true, AttributesToSkip = 0 })
+            var files = Directory.EnumerateFiles(root, "*", new EnumerationOptions { RecurseSubdirectories = true, AttributesToSkip = FileAttributes.ReparsePoint })
                 .Select(path => Path.GetRelativePath(root, path).Replace('\\', '/'))
                 .Where(relative => !relative.StartsWith(".git/", StringComparison.Ordinal) && corpus.Matches(Path.GetFileName(relative)))
                 .Order(StringComparer.Ordinal)
