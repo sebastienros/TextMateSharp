@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- This branch's TextMateSharp (GregsEx), from src/. -->
+  <PropertyGroup>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Adapter\Engine.cs" />
+    <ProjectReference Include="..\..\..\src\TextMateSharp\TextMateSharp.csproj" />
+    <ProjectReference Include="..\..\..\src\TextMateSharp.Grammars\TextMateSharp.Grammars.csproj" />
+    <ProjectReference Include="..\CorpusCheck.Abstractions\CorpusCheck.Abstractions.csproj" Private="false" ExcludeAssets="runtime" />
+  </ItemGroup>
+</Project>

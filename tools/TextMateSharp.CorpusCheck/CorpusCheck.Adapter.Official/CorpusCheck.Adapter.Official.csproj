@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- The official TextMateSharp (Onigwrap), from nuget.org. -->
+  <PropertyGroup>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <DefineConstants>$(DefineConstants);OFFICIAL</DefineConstants>
+    <OfficialTextMateSharpVersion Condition="'$(OfficialTextMateSharpVersion)' == ''">2.0.4</OfficialTextMateSharpVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Adapter\Engine.cs" />
+    <PackageReference Include="TextMateSharp" Version="$(OfficialTextMateSharpVersion)" />
+    <PackageReference Include="TextMateSharp.Grammars" Version="$(OfficialTextMateSharpVersion)" />
+    <ProjectReference Include="..\CorpusCheck.Abstractions\CorpusCheck.Abstractions.csproj" Private="false" ExcludeAssets="runtime" />
+  </ItemGroup>
+</Project>

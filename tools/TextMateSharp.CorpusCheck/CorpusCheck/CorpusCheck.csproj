@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>TextMateSharp.CorpusCheck</AssemblyName>
+    <RootNamespace>TextMateSharp.CorpusCheck</RootNamespace>
+    <ServerGarbageCollection>true</ServerGarbageCollection>
+    <TieredPGO>true</TieredPGO>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CorpusCheck.Abstractions\CorpusCheck.Abstractions.csproj" />
+    <!-- Built here, published next to the checker under adapters/, and loaded in their own AssemblyLoadContexts. -->
+    <ProjectReference Include="..\CorpusCheck.Adapter.Official\CorpusCheck.Adapter.Official.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\CorpusCheck.Adapter.Branch\CorpusCheck.Adapter.Branch.csproj" ReferenceOutputAssembly="false" />
+    <None Include="..\corpora.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Target Name="PublishAdapters" AfterTargets="Build">
+    <MSBuild Projects="..\CorpusCheck.Adapter.Official\CorpusCheck.Adapter.Official.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$([System.IO.Path]::GetFullPath('$(OutDir)'))adapters/official/" />
+    <MSBuild Projects="..\CorpusCheck.Adapter.Branch\CorpusCheck.Adapter.Branch.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$([System.IO.Path]::GetFullPath('$(OutDir)'))adapters/branch/" />
+  </Target>
+</Project>

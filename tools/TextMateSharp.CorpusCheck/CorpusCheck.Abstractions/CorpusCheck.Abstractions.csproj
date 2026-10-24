@@ -1,0 +1,3 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- The contract between the checker and both adapters; loaded once, in the default context, and shared by both. -->
+</Project>
