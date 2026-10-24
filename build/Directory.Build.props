@@ -3,6 +3,10 @@
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <SystemTextJsonVersion>8.0.5</SystemTextJsonVersion>
-    <GregsExVersion>0.4.0</GregsExVersion>
+    <GregsExVersion>0.1.0-preview.40</GregsExVersion>
+  </PropertyGroup>
+  <!-- A GregsEx CI build from feedz.io is a prerelease; the packages built on top of it are not published. -->
+  <PropertyGroup Condition="$(GregsExVersion.Contains('-'))">
+    <NoWarn>$(NoWarn);NU5104</NoWarn>
   </PropertyGroup>
 </Project>
