@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>False</IsPackable>
+    <ServerGarbageCollection>true</ServerGarbageCollection>
+  </PropertyGroup>
+
+  <!-- The two runners are built separately and copied next to the host, each loaded in its own AssemblyLoadContext. -->
+  <ItemGroup>
+    <ProjectReference Include="..\Runner\Branch\TextMateSharp.Fuzz.Runner.Branch.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\Runner\Official\TextMateSharp.Fuzz.Runner.Official.csproj" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <Target Name="CopyRunners" AfterTargets="Build">
+    <ItemGroup>
+      <BranchRunnerFiles Include="..\Runner\Branch\bin\$(Configuration)\net10.0\**\*" />
+      <OfficialRunnerFiles Include="..\Runner\Official\bin\$(Configuration)\net10.0\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(BranchRunnerFiles)" DestinationFiles="@(BranchRunnerFiles->'$(OutDir)runners\branch\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(OfficialRunnerFiles)" DestinationFiles="@(OfficialRunnerFiles->'$(OutDir)runners\official\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Import Project="..\..\..\build\Directory.Build.props" />
+</Project>

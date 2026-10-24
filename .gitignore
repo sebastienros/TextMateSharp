@@ -379,3 +379,6 @@ src/.vscode/launch.json
 .idea/.idea.TextMateSharp/.idea/copilot.data.migration.ask.xml
 .idea/.idea.TextMateSharp/.idea/copilot.data.migration.ask2agent.xml
 .idea/.idea.TextMateSharp/.idea/copilot.data.migration.edit.xml
+
+# Differential fuzzer state (tools/TextMateSharp.Fuzz)
+fuzz-state/
