@@ -144,7 +144,7 @@ public static class Generator
         {
             string opener = target.Openers.Length > 0 && random.Next(3) != 0 ? Pick(target.Openers) : Pick(Generic);
             string closer = target.Closers.Length > 0 && random.Next(3) != 0 ? Pick(target.Closers) : Pick(Generic);
-            int depth = random.Next(4) == 0 ? random.Next(50, 400) : random.Next(2, 50);
+            int depth = random.Next(10) == 0 ? random.Next(50, 200) : random.Next(2, 50);
             bool multiLine = random.Next(2) == 0;
             var lines = new List<string>();
             var line = new StringBuilder();
@@ -180,8 +180,9 @@ public static class Generator
             List<string> slice = Slice(Source());
             string unit = random.Next(2) == 0 && slice.Count > 0 ? Pick(slice) + Atom() : Atom() + " ";
             var line = new StringBuilder();
-            // Mostly a few thousand characters: the official tokenizer is quadratic on a line's length.
-            int target = random.Next(20) == 0 ? random.Next(5000, 20000) : random.Next(200, 3000);
+            // Mostly under a thousand characters: the official tokenizer is quadratic on a line's length, and its time
+            // limit runs out on longer ones, which then compare nothing past that point.
+            int target = random.Next(50) == 0 ? random.Next(2000, 5000) : random.Next(100, 1000);
             while (line.Length < target)
             {
                 line.Append(unit.Length == 0 ? " " : unit);

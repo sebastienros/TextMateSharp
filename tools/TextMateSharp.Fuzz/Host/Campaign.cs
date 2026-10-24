@@ -165,6 +165,13 @@ public sealed class Campaign
                 Console.WriteLine(Table());
                 nextTable = now.AddSeconds(_options.TableSeconds);
             }
+            // A file named "stop" in the state directory stops the campaign like Ctrl+C, for remote or detached runs.
+            if (!Stopping && File.Exists(Path.Combine(_state, "stop")))
+            {
+                File.Delete(Path.Combine(_state, "stop"));
+                Console.WriteLine("stopping: found the stop file");
+                Stop();
+            }
             if (now >= nextPersist)
             {
                 Persist();
